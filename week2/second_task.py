@@ -117,8 +117,9 @@ class Knot(Polyline):
                (self.get_point(points, alpha, deg - 1) * (1 - alpha))
 
     def delete(self):
-        self.points.pop()
-        self.speeds.pop()
+        if self.points and self.speeds:
+            self.points.pop()
+            self.speeds.pop()
 
 
 def draw_help():
