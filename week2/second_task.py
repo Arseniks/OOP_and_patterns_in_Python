@@ -116,6 +116,10 @@ class Knot(Polyline):
         return (points[deg] * alpha) + \
                (self.get_point(points, alpha, deg - 1) * (1 - alpha))
 
+    def delete(self):
+        self.points.pop()
+        self.speeds.pop()
+
 
 def draw_help():
     """функция отрисовки экрана справки программы"""
@@ -129,7 +133,7 @@ def draw_help():
     data.append(["Num+", "More points"])
     data.append(["Num-", "Less points"])
     data.append(["", ""])
-    data.append([str(steps), "Current points"])
+    data.append([str(poly.steps), "Current points"])
 
     pygame.draw.lines(gameDisplay, (255, 50, 50, 255), True, [
         (0, 0), (800, 0), (800, 600), (0, 600)], 5)
@@ -171,6 +175,8 @@ if __name__ == "__main__":
                     show_help = not show_help
                 if event.key == pygame.K_KP_MINUS:
                     poly.steps -= 1 if poly.steps > 1 else 0
+                if event.key == pygame.K_d:
+                    poly.delete()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 poly.add_point(Vec2d(event.pos[0], event.pos[1]))
