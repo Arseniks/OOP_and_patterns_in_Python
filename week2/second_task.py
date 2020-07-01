@@ -33,6 +33,7 @@ class Vec2d:
 
 class Polyline:
     def __init__(self):
+        self.game_display = pygame.display.set_mode(SCREEN_DIM)
         self.speeds = list()
         self.points = list()
 
@@ -57,14 +58,14 @@ class Polyline:
         """функция отрисовки точек на экране"""
         if style == "line":
             for p_n in range(-1, len(self.points) - 1):
-                pygame.draw.line(gameDisplay, color,
+                pygame.draw.line(self.game_display, color,
                                  (int(self.points[p_n].x), int(self.points[p_n].y)),
                                  (int(self.points[p_n + 1].x),
                                   int(self.points[p_n + 1].y)), width)
 
         elif style == "points":
             for p in self.points:
-                pygame.draw.circle(gameDisplay, color,
+                pygame.draw.circle(self.game_display, color,
                                    (int(p.x), int(p.y)), width)
 
 
@@ -78,14 +79,14 @@ class Knot(Polyline):
         if style == "line":
             points = self.get_knot()
             for p_n in range(-1, len(points) - 1):
-                pygame.draw.line(gameDisplay, color,
+                pygame.draw.line(self.game_display, color,
                                  (int(points[p_n].x), int(points[p_n].y)),
                                  (int(points[p_n + 1].x),
                                   int(points[p_n + 1].y)), width)
 
         elif style == "points":
             for p in self.points:
-                pygame.draw.circle(gameDisplay, color,
+                pygame.draw.circle(self.game_display, color,
                                    (int(p.x), int(p.y)), width)
 
     def get_knot(self):
@@ -122,9 +123,9 @@ class Knot(Polyline):
             self.speeds.pop()
 
 
-def draw_help():
+def draw_help(game_display):
     """функция отрисовки экрана справки программы"""
-    gameDisplay.fill((50, 50, 50))
+    game_display.fill((50, 50, 50))
     font1 = pygame.font.SysFont("courier", 24)
     font2 = pygame.font.SysFont("serif", 24)
     data = list()
@@ -137,18 +138,17 @@ def draw_help():
     data.append(["", ""])
     data.append([str(poly.steps), "Current points"])
 
-    pygame.draw.lines(gameDisplay, (255, 50, 50, 255), True, [
+    pygame.draw.lines(game_display, (255, 50, 50, 255), True, [
         (0, 0), (800, 0), (800, 600), (0, 600)], 5)
     for i, text in enumerate(data):
-        gameDisplay.blit(font1.render(
+        game_display.blit(font1.render(
             text[0], True, (128, 128, 255)), (100, 100 + 30 * i))
-        gameDisplay.blit(font2.render(
+        game_display.blit(font2.render(
             text[1], True, (128, 128, 255)), (200, 100 + 30 * i))
 
 
 if __name__ == "__main__":
     pygame.init()
-    gameDisplay = pygame.display.set_mode(SCREEN_DIM)
     pygame.display.set_caption("MyScreenSaver")
 
     steps = 35
@@ -183,7 +183,7 @@ if __name__ == "__main__":
             if event.type == pygame.MOUSEBUTTONDOWN:
                 poly.add_point(Vec2d(event.pos[0], event.pos[1]))
 
-        gameDisplay.fill((0, 0, 0))
+        poly.game_display.fill((0, 0, 0))
         hue = (hue + 1) % 360
         color.hsla = (hue, 100, 50, 100)
         poly.draw_points()
@@ -192,7 +192,7 @@ if __name__ == "__main__":
         if not pause:
             poly.set_points()
         if show_help:
-            draw_help()
+            draw_help(poly.game_display)
 
         pygame.display.flip()
 
