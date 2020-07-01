@@ -130,6 +130,7 @@ def draw_help():
     data.append(["F1", "Show Help"])
     data.append(["R", "Restart"])
     data.append(["P", "Pause/Play"])
+    data.append(["D", "Delete point"])
     data.append(["Num+", "More points"])
     data.append(["Num-", "Less points"])
     data.append(["", ""])
