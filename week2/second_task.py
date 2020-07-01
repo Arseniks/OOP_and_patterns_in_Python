@@ -28,7 +28,7 @@ class Vec2d:
 
     def int_pair(self):
         """возвращает пару координат, определяющих вектор"""
-        return self.x, self.y
+        return int(self.x), int(self.y)
 
 
 class Polyline:
